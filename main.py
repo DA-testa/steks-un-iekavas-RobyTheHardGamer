@@ -35,29 +35,37 @@ def find_mismatch(text):
 
 def main():
 
-  print("ievadīt no tastatūras (i) vai atvērt no faila (f)?")
+  print("ievadīt no tastatūras ar Uppercase (I) vai atvērt no faila (F)?")
   i = input()
 
-  if i == "i":
+  if i == "I":
     print("ievadīt string no tastatūras: ")
     text = input()
+    if len(text) >= 100000:
+      print("teksts no tastatūras par garu: ")
+      return
     mismatch = find_mismatch(text)
     print(mismatch)
     return
-  if i == "f":
+  if i == "F":
     print("ievadīt faila nosaukumu: ")
     i = input()
     text = open(i, "r")
+
     for line in text:
       print("faila sastāvs: ", line)
 
-    mismatch = find_mismatch(text)
+
+    mismatch = find_mismatch(line)
+    if len(line) >= 100000:
+      print("teksts no faila par garu: ")
+      return
     print(mismatch)
     text.close()
     return
 
   else:
-    print("nav pareizi ievadīts (i vai f)")
+    print("nav pareizi ievadīts (I vai F)")
     return
 
 
