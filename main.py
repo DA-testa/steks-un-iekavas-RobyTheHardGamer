@@ -2,30 +2,64 @@
 
 from collections import namedtuple
 
-Bracket = namedtuple("Bracket", ["char", "position"])
+Bracket = namedtuple("Bracket", ["char", "position"])  #Struktūra
 
 
 def are_matching(left, right):
-    return (left + right) in ["()", "[]", "{}"]
+  return (left + right) in [
+    "()", "[]", "{}"
+  ]  #pārvbauda vai atveroša un aizverošā iekava sakrīt (atkriež true/false)
 
 
 def find_mismatch(text):
-    opening_brackets_stack = []
-    for i, next in enumerate(text):
-        if next in "([{":
-            # Process opening bracket, write your code here
-            pass
+  opening_brackets_stack = []  #definēta tukša struktura
+  for i, next in enumerate(
+      text  #cikls, paņem tekstu pa burtiem, ieliek masīvā (gan numuru un simbolu)
+  ):
 
-        if next in ")]}":
-            # Process closing bracket, write your code here
-            pass
+    if next in "([{":
+      opening_brackets_stack.append(Bracket(next, i + 1))  #skaitīs uz priekšu
+
+    if next in ")]}":
+      if not opening_brackets_stack or not are_matching(
+          opening_brackets_stack[-1].char,
+          next):  #vai ir elementi un vai ir sakrītoši simboli
+        return i + 1
+      opening_brackets_stack.pop()  #izdzēšs
+
+  if opening_brackets_stack:  # vai ir tukšs?
+    #ja nav tukšs, tad ir pārbaude
+    return opening_brackets_stack[-1].position
+  return "Success"
 
 
 def main():
+
+  print("ievadīt no tastatūras (i) vai atvērt no faila (f)?")
+  i = input()
+
+  if i == "i":
+    print("ievadīt string no tastatūras: ")
     text = input()
     mismatch = find_mismatch(text)
-    # Printing answer, write your code here
+    print(mismatch)
+    return
+  if i == "f":
+    print("ievadīt faila nosaukumu: ")
+    i = input()
+    text = open(i, "r")
+    for line in text:
+      print("faila sastāvs: ", line)
+
+    mismatch = find_mismatch(text)
+    print(mismatch)
+    text.close()
+    return
+
+  else:
+    print("nav pareizi ievadīts (i vai f)")
+    return
 
 
 if __name__ == "__main__":
-    main()
+  main()
